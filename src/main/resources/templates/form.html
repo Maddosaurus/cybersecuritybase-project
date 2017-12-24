@@ -13,6 +13,14 @@
             <p><input type="submit" value="Submit" /></p>
         </form>
 
+        <h2>These people already signed up</h2>
+
+        <ul>
+            <!-- To exploit the unescaped span here, enter some valid html in the address field in the form section
+                 i.e. <script>alert(document.cookie)</script> as the address -->
+            <li th:each="signup : ${signups}"><span th:text="${signup.name}">user name</span> - <span th:utext="${signup.address}">user address</span></li>
+        </ul>
+
         <p></p>
     </body>
 </html>
