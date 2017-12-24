@@ -40,3 +40,7 @@ spring-boot-starter-data-jpa-1.4.0.RELEASE.jar (cpe:/a:pivotal_software:spring_d
 spring-boot-1.4.0.RELEASE.jar (cpe:/a:pivotal:spring_framework:1.4.0, cpe:/a:pivotal_software:spring_framework:1.4.0, org.springframework.boot:spring-boot:1.4.0.RELEASE) : CVE-2016-9878
 spring-core-4.3.2.RELEASE.jar (cpe:/a:pivotal:spring_framework:4.3.2, cpe:/a:pivotal_software:spring_framework:4.3.2, cpe:/a:springsource:spring_framework:4.3.2, cpe:/a:vmware:springsource_spring_framework:4.3.2, org.springframework:spring-core:4.3.2.RELEASE) : CVE-2016-9878
 ```
+
+## Exposure of the unconfigured database admin console (A5)
+Exposing admin panel access with default credentials is extremely dangerous and bypasses all security measurements of the application.  
+The admin console can be found at [/h2-console](http://localhost:8080/h2-console) and is secured with no password in this config.
