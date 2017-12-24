@@ -6,13 +6,14 @@ Following is a writeup of all developer introduced bugs / [OWASP Top Ten](https:
 ---
 
 This writeup as well as the referenced code can be found at https://github.com/Maddosaurus/cybersecuritybase-project    
-It is a a better formatted (Markdown) Version of this report as well as the requeired codebase.
+It is a a better formatted (Markdown) Version of this report as well as the requeired codebase.  
+This is a fork of the provided cybersecuritybase-project, so it is a Java-based Spring Boot application. If you were able to run the other examples in this course, you should be able to run this one too.  
 
 
 ## **Issue**: Stored XSS in unescaped address input (A3)
 There is an unescaped field that takes user input and is reflected onto the form page.  
 If opened, the form page lists all previous entries in the signup process with name and address.  
-If a user enters any valid HTML in the address field, it is reflected on every page load.
+If a user enters any valid HTML in the address field, it is reflected on every page load.  This results in a stored XSS attack, as it is persistent across multiple users as well as multiple reloads. If persisted in a database, it would even survive an application server reboot.
 
 **Steps to reproduce:**
 - Open the application (/form)
@@ -28,10 +29,12 @@ Additionally, the span that reflects the address parameter in `form.html` has to
 ```
 <span th:text="${signup.address}">user address</span>
 ```
+After these steps, every text input, even if valid HTML, is escaped to plain text and can be found as regular text on the website.  
 
 
 ## Exposure of the unconfigured database admin console (A5)
 Exposing admin panel access with default credentials is extremely dangerous and bypasses all security measurements of the application.  
+The h2-console allows access to the underlying database that is behind a typical application.
 I exposed the h2 management console at /h2-console without any authentication.  
 
 **Steps to reproduce:**
@@ -45,11 +48,13 @@ I exposed the h2 management console at /h2-console without any authentication.
 There is, as always, more than one way to fix this problem.  
 One could set a password for the `sa` user, so that not everyone can login to the h2 interface.  
 In my oppinion it would be an even better idea to remove access to this interface at all by removing the line ` http.authorizeRequests().antMatchers("/h2-console/*").permitAll();` completely from `SecurityConfiguration.java`.  
+The database management should ideally be done through a sperate channel (i.e. local management software).
 
 
 ## **Issue**: No CSRF Tokens (A8)
 No form in the application uses CSRF tokens.  
 While there is no custom functionality implemented in this example, the absence of CSRF tokens is very dangerous.  
+Missing tokens could for example be used to trick authenticated users in executing malicious tasks, i.e. completing a transaction in an online banking application.
 
 **Steps to reproduce**:
 - Open the application (/form)
@@ -58,7 +63,7 @@ While there is no custom functionality implemented in this example, the absence 
 
 **How to fix**:  
 To enforce the absence of CSRF tokens, `http.csrf().disable();`has been set in `SecurityConfiguration.java`, to be exact in the function `protected void configure(HttpSecurity http)`. To enable CSRF tokens again, remove said function call from the function.
-
+This leads to the Spring framework adding CSRF tokens to every form in the application.
 
 ## Using outdated components with known vulnerabilities (A9)
 I downgraded Spring Boot in `pom.xml` to version *1.4.0* to force the use of outdated Maven dependencies.  
