@@ -27,4 +27,8 @@ public class SignupService {
         signupRepository.save(signup);
 
     }
+
+    public void removeSignup(Signup signup) {
+        signupRepository.delete(signup);
+    }
 }

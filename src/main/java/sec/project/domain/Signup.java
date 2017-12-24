@@ -3,6 +3,8 @@ package sec.project.domain;
 import javax.persistence.Entity;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 
+import java.util.Objects;
+
 @Entity
 public class Signup extends AbstractPersistable<Long> {
 
@@ -34,5 +36,4 @@ public class Signup extends AbstractPersistable<Long> {
     public void setAddress(String address) {
         this.address = address;
     }
-
 }

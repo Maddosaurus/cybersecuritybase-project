@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Admin Area</title>
+    </head>
+    <body>
+
+        <h2>Manage signed up users</h2>
+        <p>Only authorzied personell is allowed here!</p>
+
+        <ul>
+            <li th:each="signup : ${signups}">
+                <span th:text="${signup.name}">user name</span> -
+                <span th:text="${signup.address}">user address</span>
+                <form th:action="@{/admin/signups/{id}(id=${signup.id})}" th:method="DELETE">
+                    <input type="submit" value="Remove Signup"/>
+                </form>
+            </li>
+        </ul>
+    </body>
+</html>
